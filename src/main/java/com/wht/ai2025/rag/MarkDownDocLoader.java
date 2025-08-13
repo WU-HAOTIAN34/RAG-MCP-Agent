@@ -30,12 +30,13 @@ public class MarkDownDocLoader {
             Resource[] resources = resourcePatternResolver.getResources("classpath:document/*.md");
             for (Resource resource : resources) {
                 String filename = resource.getFilename();
+                String city = resource.getFilename().substring(0,3);
                 MarkdownDocumentReaderConfig config = MarkdownDocumentReaderConfig.builder()
                         .withHorizontalRuleCreateDocument(true)
                         .withIncludeCodeBlock(false)
                         .withIncludeBlockquote(false)
                         .withAdditionalMetadata("filename", filename)
-                        .withAdditionalMetadata("title", resource.toString().substring(0, 5))
+                        .withAdditionalMetadata("city", city)
                         .build();
                 MarkdownDocumentReader reader = new MarkdownDocumentReader(resource, config);
                 List<Document> read = reader.read();

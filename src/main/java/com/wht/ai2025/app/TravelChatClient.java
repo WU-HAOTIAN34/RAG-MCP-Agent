@@ -1,6 +1,7 @@
 package com.wht.ai2025.app;
 
 
+import com.wht.ai2025.advisor.LoggerAdvisor;
 import com.wht.ai2025.advisor.Re2Advisor;
 import com.wht.ai2025.constant.PromptConstant;
 import jakarta.annotation.Resource;
@@ -38,7 +39,7 @@ public class TravelChatClient {
                 .defaultSystem(PromptConstant.TRAVELER_SYSTEM_PROMPT)
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build(),
 //                        new Re2Advisor(),
-                        new Re2Advisor());
+                        new LoggerAdvisor());
 
         this.chatClient = builder.build();
     }
@@ -46,6 +47,7 @@ public class TravelChatClient {
 
     public String doResponse(String message, String userId){
         ChatResponse chatResponse = chatClient.prompt()
+                .user(message)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, userId))
                 .call()
                 .chatResponse();
@@ -55,6 +57,7 @@ public class TravelChatClient {
 
     public String doResponseWithLocalRAG(String message, String userId){
         ChatResponse chatResponse = chatClient.prompt()
+                .user(message)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, userId))
                 .advisors(QuestionAnswerAdvisor.builder(localVectorStore).build())
                 .call()

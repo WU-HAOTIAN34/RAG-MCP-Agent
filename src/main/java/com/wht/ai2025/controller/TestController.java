@@ -1,9 +1,8 @@
 package com.wht.ai2025.controller;
 
 
-import com.wht.ai2025.app.TestChatClient;
+import com.wht.ai2025.app.TravelChatClient;
 import jakarta.annotation.Resource;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ public class TestController {
     String apiKey;
 
     @Resource
-    private TestChatClient testChatClient;
+    private TravelChatClient travelChatClient;
 
     @Resource
     private ChatModel dashScopeChatModel;
@@ -34,7 +33,7 @@ public class TestController {
     public String test(@RequestBody Map<String, String> map) {
         String msg = map.get("msg");
         String id = map.get("id");
-        String s = testChatClient.sendMessage(msg, id);
+        String s = travelChatClient.doResponse(msg, id);
         return s;
     }
 }
